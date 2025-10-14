@@ -1,26 +1,15 @@
 from fastmcp import FastMCP
-import mysql.connector
+from fastmcp_mysql import MySQL
 from typing import Dict, List, Any
 
 mcp = FastMCP()
-
-def get_connection():
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="luza0609",
-        database="bd_ecommerce_cse642"
-    )
+db = MySQL()
 
 @mcp.tool(name="listar_productos", description="Lista todos los productos disponibles.")
 def listar_productos(_: Dict[str, Any]) -> List[Dict[str, Any]]:
     def run():
-        conn = get_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM productos")
-        productos = cursor.fetchall()
-        cursor.close()
-        conn.close()
+        query = "SELECT * FROM productos"
+        productos = db.query(query)
         return productos
     return run()
 
@@ -31,13 +20,9 @@ def listar_productos(_: Dict[str, Any]) -> List[Dict[str, Any]]:
 def consultar_producto_por_id(params: Dict[str, Any]) -> Dict[str, Any]:
     def run():
         producto_id = params.get("id")
-        conn = get_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM productos WHERE id = %s", (producto_id,))
-        producto = cursor.fetchone()
-        cursor.close()
-        conn.close()
-        return producto if producto else {"error": "Producto no encontrado"}
+        query = "SELECT * FROM productos WHERE id = %s"
+        producto = db.query(query, (producto_id,))
+        return producto[0] if producto else {"error": "Producto no encontrado"}
     return run()
 
 if __name__ == "__main__":
