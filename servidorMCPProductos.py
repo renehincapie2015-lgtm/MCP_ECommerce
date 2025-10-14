@@ -1,7 +1,7 @@
 from fastmcp import FastMCP
 from typing import Dict, List, Any
 
-mcp = FastMCP()
+mcp = FastMCP("Servidor MCP de Productos")
 
 @mcp.tool(name="listar_productos", description="Lista todos los productos disponibles.")
 def listar_productos(_: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -19,5 +19,15 @@ def consultar_producto_por_id(params: Dict[str, Any]) -> Dict[str, Any]:
         return resultado[0] if resultado else {"error": "Producto no encontrado"}
     return run()
 
+@mcp.tool(name="probar_conexion_mysql", description="Verifica si la conexión a MySQL está activa.")
+def probar_conexion_mysql(_: Dict[str, Any]) -> Dict[str, Any]:
+    def run():
+        try:
+            resultado = mcp.mysql.query("SELECT 1")
+            return {"estado": "conectado", "resultado": resultado}
+        except Exception as e:
+            return {"estado": "error", "detalle": str(e)}
+    return run()
+
 if __name__ == "__main__":
-    mcp.run()
+    mcp.run(transport="http", port=8001)
