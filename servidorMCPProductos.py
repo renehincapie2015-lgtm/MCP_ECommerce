@@ -30,4 +30,4 @@ def probar_conexion_mysql(_: Dict[str, Any]) -> Dict[str, Any]:
     return run()
 
 if __name__ == "__main__":
-    mcp.run(transport="http", port=8001)
+    mcp.run()
