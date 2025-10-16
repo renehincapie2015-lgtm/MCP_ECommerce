@@ -16,4 +16,4 @@ def consultar_producto_por_id(params: Dict[str, Any]) -> Dict[str, Any]:
         return resultado[0] if resultado else {"error": "Producto no encontrado"}
 
 def run_productos_server():
-    mcp.run()
+    mcp.run() 
