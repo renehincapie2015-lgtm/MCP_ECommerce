@@ -17,4 +17,3 @@ def consultar_producto_por_id(params: Dict[str, Any]) -> Dict[str, Any]:
 
 def run_productos_server():
     mcp.run()
- 
