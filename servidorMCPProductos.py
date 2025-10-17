@@ -1,7 +1,7 @@
 from fastmcp import FastMCP
 from typing import Dict, List, Any
 
-mcp = FastMCP("Servidor MCP de Productos")
+mcp = FastMCP("Servidor MCP de Productos", use_mysql=True)
 
 @mcp.tool(name="listar_productos", description="Lista todos los productos disponibles.")
 def listar_productos(_: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -16,4 +16,4 @@ def consultar_producto_por_id(params: Dict[str, Any]) -> Dict[str, Any]:
         return resultado[0] if resultado else {"error": "Producto no encontrado"}
 
 def run_productos_server():
-    mcp.run() 
+    mcp.run()
